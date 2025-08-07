@@ -18,6 +18,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.formula.translate import Translator
+from openpyxl.comments import Comment
 import shutil
 from pathlib import Path
 
@@ -180,9 +181,11 @@ def process_csv_file(csv_path, template_path, output_dir):
         ].reset_index(drop=True)
         print(f"  Filas filtradas: {len(filtered_df)} de {len(df_csv)} (solo con label válido)")
     
-    # Agregar datos del CSV filtrado
+    # Process each row of data
     for csv_row_idx, csv_row in filtered_df.iterrows():
         excel_row = csv_row_idx + 4  # Empezar desde la fila 4
+        content_text = None  # Almacenar contenido para agregar como nota
+        label_cell = None  # Referencia a la celda LABEL
         
         for col_idx, template_col_name in enumerate(column_names):
             excel_col = col_idx + 1
@@ -197,15 +200,14 @@ def process_csv_file(csv_path, template_path, output_dir):
                     cell.value = ""
                 else:
                     cell.value = str(csv_value)
-            elif template_col_name == 'CONTENT':
-                # Llenar columna CONTENT con el contenido del archivo
-                # Usar content_file_path del CSV si existe
-                if 'content_file_path' in df_csv.columns:
-                    content_file_path = csv_row.get('content_file_path', '')
-                    content = read_content_file(content_file_path, base_dir)
-                    cell.value = content
-                else:
-                    cell.value = ""  # Si no hay content_file_path, dejar vacío
+                    
+                # Guardar referencia a la celda LABEL y leer contenido para nota
+                if template_col_name.upper() == 'LABEL':
+                    label_cell = cell
+                    # Leer contenido del archivo para agregar como nota
+                    if 'content_file_path' in df_csv.columns:
+                        content_file_path = csv_row.get('content_file_path', '')
+                        content_text = read_content_file(content_file_path, base_dir)
             else:
                 # Usar valor del template (fila 3)
                 template_cell_data = template_row_data[col_idx]
@@ -249,6 +251,13 @@ def process_csv_file(csv_path, template_path, output_dir):
                 )
             
             cell.number_format = template_cell_data['number_format']
+        
+        # Agregar contenido como nota a la celda LABEL si tenemos contenido y celda LABEL
+        if content_text and label_cell and content_text.strip():
+            comment = Comment(content_text, "Sistema")
+            comment.width = 400
+            comment.height = 300
+            label_cell.comment = comment
     
     # Ajustar ancho de columnas
     for col in ws_new.columns:
