@@ -30,4 +30,10 @@ pnpm-debug.log*
 tests-examples
 *.csveditor/
 
+# CSV output files from InterviewTemplates
+InterviewTemplates/csv_output/*.csv
+
+# Excel interview templates from InterviewTemplates
+InterviewTemplates/Interviews/generated/*.xlsx
+
 packages/editor
