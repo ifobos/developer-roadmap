@@ -153,6 +153,11 @@
         "title": "Underlying Technologies - Medium",
         "url": "https://medium.com/@furkan.turkal/how-does-docker-actually-work-the-hard-way-a-technical-deep-diving-c5b8ea2f0422",
         "type": "article"
+      },
+      {
+        "title": "Containers - Namespaces, Cgroups and Overlay Filesystem",
+        "url": "https://www.youtube.com/watch?v=wJdDWc6zO4U",
+        "type": "video"
       }
     ]
   },
@@ -375,22 +380,6 @@
         "title": "How to Setup MySQL Database with Docker",
         "url": "https://www.youtube.com/watch?v=igc2zsOKPJs",
         "type": "video"
-      }
-    ]
-  },
-  "HlTxLqKNFMhghtKF6AcWu": {
-    "title": "Interactive Test Environments",
-    "description": "Docker allows you to create isolated, disposable environments that can be deleted once you're done with testing. This makes it much easier to work with third party software, test different dependencies or versions, and quickly experiment without the risk of damaging your local setup.\n\nVisit the following resources to learn more:",
-    "links": [
-      {
-        "title": "Launch a Dev Environment",
-        "url": "https://docs.docker.com/desktop/dev-environments/create-dev-env/",
-        "type": "article"
-      },
-      {
-        "title": "Test Environments - Medium",
-        "url": "https://manishsaini74.medium.com/containerized-testing-orchestrating-test-environments-with-docker-5201bfadfdf2",
-        "type": "article"
       }
     ]
   },
